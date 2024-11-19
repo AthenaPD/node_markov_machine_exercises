@@ -11,19 +11,19 @@ function makeTextFromFile(filePath) {
             console.log(`Error reading ${filePath}\n Error: ${err.message}`);
             process.kill(1);
         }
-        console.log(makeMMText(data));
+        makeMMText(data);
     })
 }
 
 function makeTextFromUrl(url) {
     axios.get(`${url}`)
-        .then(resp => console.log(makeMMText(resp.data)))
+        .then(resp => makeMMText(resp.data))
         .catch(err => console.log(`Error fetching ${url}:\n Error: ${err.message}`));
 }
 
 function makeMMText(str) {
     let mm = new MarkovMachine(str);
-    return mm.makeText();
+    console.log(mm.makeText());
 }
 
 if (process.argv[2] === 'file') makeTextFromFile(process.argv[3]);

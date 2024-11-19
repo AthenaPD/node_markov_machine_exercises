@@ -33,7 +33,7 @@ class MarkovMachine {
 
   /** return random text from chains */
 
-  makeText(numWords = 100) {
+  makeText(numWords = 1000) {
 
     let output = '';
     let currNumWords = 0;
@@ -41,7 +41,7 @@ class MarkovMachine {
     while (currNumWords <= numWords) {
       let [nWords, newSentence] = this._getNextSentence();
       currNumWords += nWords;
-      if (currNumWords > numWords) break;
+      // if (currNumWords > numWords) break;
       output += newSentence;
     }
 
