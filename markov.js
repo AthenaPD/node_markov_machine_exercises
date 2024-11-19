@@ -33,33 +33,33 @@ class MarkovMachine {
 
   /** return random text from chains */
 
-  makeText(numWords = 1000) {
+  makeText(numWords = 100) {
 
     let output = '';
     let currNumWords = 0;
 
-    while (currNumWords <= numWords) {
-      let [nWords, newSentence] = this._getNextSentence();
+    while (currNumWords < numWords) {
+      let numWordsLeft = numWords - currNumWords;
+      let [nWords, newSentence] = this._getNextSentence(numWordsLeft);
       currNumWords += nWords;
-      // if (currNumWords > numWords) break;
-      output += newSentence;
+      output += output.slice(-2) === '. ' ? newSentence :` ${newSentence}` ;
     }
 
     return output
   }
 
-  _getNextSentence() {
+  _getNextSentence(numWords) {
     const idxStart = Math.floor(Math.random() * this.words.length);
     let currWord = this.words[idxStart];
     let sentence = currWord;
     let nWords = 1;
 
-    while (true) {
+    while (nWords < numWords) {
       const nextWords = this.chain[currWord];
       const idxNext = Math.floor(Math.random() * nextWords.length);
       const nextWord = nextWords[idxNext];
       if (nextWord === null) {
-        sentence += '.';
+        sentence += '. ';
         break;
       }
       sentence += ` ${nextWord}`;
@@ -69,10 +69,5 @@ class MarkovMachine {
     return [nWords, sentence];
   }
 }
-
-// let mm = new MarkovMachine("the cat in the hat");
-// const output = mm.makeText();
-// console.log(output);
-// mm.makeText(numWords=10);
 
 module.exports = MarkovMachine;
