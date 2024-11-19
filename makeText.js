@@ -18,7 +18,10 @@ function makeTextFromFile(filePath) {
 function makeTextFromUrl(url) {
     axios.get(`${url}`)
         .then(resp => makeMMText(resp.data))
-        .catch(err => console.log(`Error fetching ${url}:\n Error: ${err.message}`));
+        .catch(err =>{
+            console.log(`Error fetching ${url}:\n Error: ${err.message}`);
+            process.kill(1);
+        });
 }
 
 function makeMMText(str) {
@@ -26,5 +29,11 @@ function makeMMText(str) {
     console.log(mm.makeText());
 }
 
-if (process.argv[2] === 'file') makeTextFromFile(process.argv[3]);
-if (process.argv[2] === 'url') makeTextFromUrl(process.argv[3]);
+if (process.argv[2] === 'file') {
+    console.log(`... generated text from ${process.argv[2]} '${process.argv[3]}' ...`);
+    makeTextFromFile(process.argv[3]);
+};
+if (process.argv[2] === 'url') {
+    console.log('... generated text from that URL ...')
+    makeTextFromUrl(process.argv[3]);
+};
